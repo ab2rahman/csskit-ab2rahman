@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { animations } from '../../animations/index';
+import { categories } from '../../data/animations';
+import { getAnimationBySlug, getAnimationsByCategory } from '../../animations/index';
+import AnimationPreview from '../../components/AnimationPreview';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return animations.map((anim) => ({
+    params: { slug: anim.slug },
+    props: { animation: anim },
+  }));
+};
+
+const { animation } = Astro.props;
+const related = getAnimationsByCategory(animation.category).filter(
+  (a) => a.slug !== animation.slug
+).slice(0, 3);
+---
+
+<BaseLayout title={animation.name} description={animation.description}>
+  {/* Back link */}
+  <a
+    href="/"
+    class="inline-flex items-center gap-2 text-sm text-text-muted hover:text-brand transition-colors mb-6"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    Back to Library
+  </a>
+
+  {/* Header */}
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-brand/10 text-brand capitalize">
+        {animation.category}
+      </span>
+      {animation.tags.map((tag) => (
+        <span class="px-2 py-0.5 text-[10px] rounded-full bg-surface-lighter/50 text-text-muted">
+          {tag}
+        </span>
+      ))}
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-text">{animation.name}</h1>
+    <p class="text-text-muted mt-2">{animation.description}</p>
+  </div>
+
+  {/* Interactive preview */}
+  <AnimationPreview
+    client:load
+    animation={animation}
+  />
+
+  {/* Related animations */}
+  {related.length > 0 && (
+    <div class="mt-12">
+      <h2 class="text-lg font-semibold text-text mb-4">Related Animations</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {related.map((rel) => (
+          <a
+            href={`/animations/${rel.slug}`}
+            class="group block rounded-xl border border-border bg-surface-light hover:border-brand/50 transition-all duration-300 overflow-hidden"
+          >
+            <div
+              class:list={[
+                "relative flex items-center justify-center overflow-hidden h-32",
+                rel.preview.darkBg ? "bg-black" : "bg-surface"
+              ]}
+            >
+              <style is:inline set:html={rel.css} />
+              <div class="scale-50 origin-center pointer-events-none" set:html={rel.html} />
+            </div>
+            <div class="p-3">
+              <h3 class="font-medium text-sm text-text group-hover:text-brand transition-colors">{rel.name}</h3>
+              <p class="text-xs text-text-muted mt-1 line-clamp-1">{rel.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+</BaseLayout>

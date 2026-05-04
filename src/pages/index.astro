@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { animations } from '../animations/index';
+import { categories } from '../data/animations';
+import HomePage from '../components/HomePage';
+
+const categoryParam = Astro.url.searchParams.get('category') || undefined;
+---
+
+<BaseLayout title="CSS Animation Library">
+  {/* Hero section */}
+  <div class="mb-10">
+    <h1 class="text-3xl md:text-4xl font-bold text-text mb-3">
+      CSS Animation <span class="text-brand">Library</span>
+    </h1>
+    <p class="text-text-muted text-lg max-w-2xl">
+      Browse, customize, and copy-paste beautiful CSS animations.
+      Zero dependencies. Pure CSS + HTML.
+    </p>
+  </div>
+
+  <HomePage
+    client:load
+    animations={animations}
+    categories={categories}
+    initialCategory={categoryParam}
+  />
+</BaseLayout>

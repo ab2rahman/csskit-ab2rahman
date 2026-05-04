@@ -1,0 +1,44 @@
+---
+import type { Animation } from '../data/animations';
+
+interface Props {
+  animation: Animation;
+}
+
+const { animation } = Astro.props;
+---
+
+<a
+  href={`/animations/${animation.slug}`}
+  class="group block rounded-xl border border-border bg-surface-light hover:border-brand/50 hover:bg-surface-lighter/30 transition-all duration-300 overflow-hidden"
+>
+  <div
+    class:list={[
+      "relative flex items-center justify-center overflow-hidden",
+      animation.preview.darkBg ? "bg-black" : "bg-surface"
+    ]}
+    style={`height: ${Math.min(animation.preview.height, 180)}px`}
+  >
+    <style is:inline set:html={animation.css} />
+    <div class="scale-[0.65] sm:scale-75 origin-center pointer-events-none" set:html={animation.html} />
+
+    <!-- Hover overlay -->
+    <div class="absolute inset-0 bg-brand/0 group-hover:bg-brand/5 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+      <span class="px-3 py-1.5 bg-surface/90 rounded-full text-xs font-medium text-brand border border-brand/30">
+        View & Customize →
+      </span>
+    </div>
+  </div>
+
+  <div class="p-4">
+    <h3 class="font-semibold text-text text-sm mb-1 group-hover:text-brand transition-colors">{animation.name}</h3>
+    <p class="text-xs text-text-muted line-clamp-2">{animation.description}</p>
+    <div class="flex gap-1.5 mt-3 flex-wrap">
+      {animation.tags.slice(0, 3).map((tag) => (
+        <span class="px-2 py-0.5 text-[10px] rounded-full bg-surface-lighter/50 text-text-muted">
+          {tag}
+        </span>
+      ))}
+    </div>
+  </div>
+</a>
