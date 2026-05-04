@@ -19,43 +19,42 @@ export default function AnimationPreview({ animation }: Props) {
     setParamValues((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  // Apply CSS variables to preview element
-  useEffect(() => {
-    if (!previewRef.current) return;
-    const el = previewRef.current;
-    animation.params.forEach((p) => {
-      const val = paramValues[p.name];
-      if (p.type === "duration") {
-        el.style.setProperty(p.name, `${val}${p.unit || "s"}`);
-      } else if (p.type === "range") {
-        el.style.setProperty(p.name, `${val}${p.unit || ""}`);
-      } else {
-        el.style.setProperty(p.name, `${val}`);
-      }
-    });
-  }, [paramValues, animation.params]);
-
-  // Generate the customized code
+  // Generate the CSS with current param values substituted in
   const generateCSS = useCallback(() => {
     let css = animation.css;
     animation.params.forEach((p) => {
       const val = paramValues[p.name];
       const unit = p.type === "duration" ? (p.unit || "s") : (p.type === "range" ? (p.unit || "") : "");
-      // Replace the default values in CSS custom properties
-      const regex = new RegExp(`(${p.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*:\\s*)([^;]+)(;)`, 'g');
+      // Replace CSS custom property defaults: --var-name: value;
+      const regex = new RegExp(
+        `(${p.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*:\\s*)([^;]+)(;)`,
+        "g"
+      );
       css = css.replace(regex, `$1${val}${unit}$3`);
     });
     return css;
   }, [animation, paramValues]);
 
+  // Generate HTML with text params substituted
   const generateHTML = useCallback(() => {
     let html = animation.html;
+    // For text params, update both the visible text and any CSS variable in style attributes
     animation.params.forEach((p) => {
       if (p.type === "text") {
         const val = String(paramValues[p.name]);
-        html = html.replace(/style="([^"]*)--[^:]+:\s*'[^']*'([^"]*)"/g, (match, before, after) => {
-          return match.replace(new RegExp(`--[^:]+:\\s*'[^']*'`), `${p.name}: '${val}'`);
-        });
+        // Update inline style CSS vars like --glitch-text: 'GLITCH'
+        const styleRegex = new RegExp(
+          `(--${p.name.replace(/^--/, "")}\\s*:\\s*)'[^']*'`,
+          "g"
+        );
+        html = html.replace(styleRegex, `$1'${val}'`);
+        // Also update the visible text content between tags for simple elements
+        // e.g. <span class="text-glitch">GLITCH</span>
+        // Only replace if the text matches the default
+        const defaultVal = String(p.default);
+        if (html.includes(`>${defaultVal}<`)) {
+          html = html.replace(`>${defaultVal}<`, `>${val}<`);
+        }
       }
     });
     return html;
@@ -69,7 +68,7 @@ export default function AnimationPreview({ animation }: Props) {
       {/* Live Preview */}
       <div
         ref={previewRef}
-        className={`rounded-xl border border-border overflow-hidden flex items-center justify-center ${
+        className={`csskit-preview rounded-xl border border-border overflow-hidden flex items-center justify-center ${
           animation.preview.darkBg ? "bg-black" : "bg-surface"
         }`}
         style={{
@@ -83,7 +82,9 @@ export default function AnimationPreview({ animation }: Props) {
 
       {/* Parameter Controls */}
       <div className="mt-6 space-y-4">
-        <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider">Parameters</h3>
+        <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider">
+          Parameters
+        </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {animation.params.map((param) => (
             <ParamControl
@@ -122,7 +123,7 @@ function ParamControl({
         />
         <div>
           <div className="text-xs font-medium text-text">{param.label}</div>
-          <div className="text-xs text-text-muted">{String(value)}</div>
+          <div className="text-xs text-text-muted font-mono">{String(value)}</div>
         </div>
       </label>
     );
@@ -136,7 +137,8 @@ function ParamControl({
         <div className="flex justify-between items-center mb-2">
           <span className="text-xs font-medium text-text">{param.label}</span>
           <span className="text-xs text-brand font-mono">
-            {numVal}{unit}
+            {numVal}
+            {unit}
           </span>
         </div>
         <input
@@ -190,36 +192,37 @@ function ParamControl({
 
 function CodeBlock({ css, html }: { css: string; html: string }) {
   const [activeTab, setActiveTab] = useState<"css" | "html">("css");
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<"tab" | "all" | null>(null);
 
   const code = activeTab === "css" ? css : html;
-  const handleCopy = () => {
+
+  const handleCopyTab = () => {
     navigator.clipboard.writeText(code).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopied("tab");
+      setTimeout(() => setCopied(null), 2000);
     });
   };
 
   const handleCopyAll = () => {
     const all = `/* CSS */\n${css}\n\n<!-- HTML -->\n${html}`;
     navigator.clipboard.writeText(all).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopied("all");
+      setTimeout(() => setCopied(null), 2000);
     });
   };
 
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider">Generated Code</h3>
-        <div className="flex gap-2">
-          <button
-            onClick={handleCopyAll}
-            className="px-3 py-1.5 text-xs font-medium bg-brand/10 text-brand rounded-lg hover:bg-brand/20 transition-colors"
-          >
-            {copied ? "Copied!" : "Copy All"}
-          </button>
-        </div>
+        <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider">
+          Generated Code
+        </h3>
+        <button
+          onClick={handleCopyAll}
+          className="px-3 py-1.5 text-xs font-medium bg-brand/10 text-brand rounded-lg hover:bg-brand/20 transition-colors"
+        >
+          {copied === "all" ? "Copied!" : "Copy All"}
+        </button>
       </div>
 
       <div className="rounded-xl border border-border overflow-hidden">
@@ -227,7 +230,9 @@ function CodeBlock({ css, html }: { css: string; html: string }) {
           <button
             onClick={() => setActiveTab("css")}
             className={`px-4 py-2.5 text-xs font-semibold transition-colors ${
-              activeTab === "css" ? "text-brand border-b-2 border-brand" : "text-text-muted hover:text-text"
+              activeTab === "css"
+                ? "text-brand border-b-2 border-brand"
+                : "text-text-muted hover:text-text"
             }`}
           >
             CSS
@@ -235,17 +240,19 @@ function CodeBlock({ css, html }: { css: string; html: string }) {
           <button
             onClick={() => setActiveTab("html")}
             className={`px-4 py-2.5 text-xs font-semibold transition-colors ${
-              activeTab === "html" ? "text-brand border-b-2 border-brand" : "text-text-muted hover:text-text"
+              activeTab === "html"
+                ? "text-brand border-b-2 border-brand"
+                : "text-text-muted hover:text-text"
             }`}
           >
             HTML
           </button>
           <div className="flex-1" />
           <button
-            onClick={handleCopy}
-            className="px-3 text-xs text-text-muted hover:text-brand transition-colors"
+            onClick={handleCopyTab}
+            className="px-4 py-2.5 text-xs font-medium text-text-muted hover:text-brand transition-colors"
           >
-            {copied ? "Copied!" : "Copy"}
+            {copied === "tab" ? "Copied!" : "Copy"}
           </button>
         </div>
         <pre className="p-4 text-xs leading-relaxed overflow-x-auto bg-surface text-text-muted max-h-80">
