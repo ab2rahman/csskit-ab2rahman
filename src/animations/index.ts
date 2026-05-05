@@ -36,6 +36,16 @@ import attentionRubber from "./attention-rubber";
 import cardFlip3d from "./card-flip-3d";
 import cardStack from "./card-stack";
 import cardGlass from "./card-glass";
+import attentionBounce from "./attention-bounce";
+import attentionFlash from "./attention-flash";
+import attentionHeartbeat from "./attention-heartbeat";
+import attentionJello from "./attention-jello";
+import attentionSwing from "./attention-swing";
+import cardExpand from "./card-expand";
+import cardSpotlight from "./card-spotlight";
+import cardShuffle from "./card-shuffle";
+import cardBorderGlow from "./card-border-glow";
+import cardTilt from "./card-tilt";
 
 export const animations: Animation[] = [
   // Text
@@ -78,10 +88,20 @@ export const animations: Animation[] = [
   attentionShake,
   attentionPulseGlow,
   attentionRubber,
+  attentionBounce,
+  attentionFlash,
+  attentionHeartbeat,
+  attentionJello,
+  attentionSwing,
   // Card
   cardFlip3d,
   cardStack,
   cardGlass,
+  cardExpand,
+  cardSpotlight,
+  cardShuffle,
+  cardBorderGlow,
+  cardTilt,
   // Pixel
   pixelBat,
 ];
