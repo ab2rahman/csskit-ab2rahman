@@ -30,6 +30,12 @@ import bouncePress from "./bounce-press";
 import gradientBorder from "./gradient-border";
 import magneticHover from "./magnetic-hover";
 import pixelBat from "./pixel-bat";
+import attentionShake from "./attention-shake";
+import attentionPulseGlow from "./attention-pulse-glow";
+import attentionRubber from "./attention-rubber";
+import cardFlip3d from "./card-flip-3d";
+import cardStack from "./card-stack";
+import cardGlass from "./card-glass";
 
 export const animations: Animation[] = [
   // Text
@@ -68,6 +74,14 @@ export const animations: Animation[] = [
   bouncePress,
   gradientBorder,
   magneticHover,
+  // Attention
+  attentionShake,
+  attentionPulseGlow,
+  attentionRubber,
+  // Card
+  cardFlip3d,
+  cardStack,
+  cardGlass,
   // Pixel
   pixelBat,
 ];
