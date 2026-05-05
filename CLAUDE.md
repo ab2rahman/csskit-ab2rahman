@@ -121,7 +121,18 @@ src/
 | loading | Loading | ◌ |
 | background | Background | ▦ |
 | entrance | Entrance | ↓ |
+| exit | Exit | ↑ |
 | attention | Attention | ★ |
 | button | Button | ☐ |
 | card | Card | ▢ |
+| divider | Divider | — |
 | pixel | Pixel | ▪ |
+
+## Expansion Plan
+
+See [PLAN-more-animations.md](./PLAN-more-animations.md) for the full roadmap to grow from 37 → 91 animations.
+
+Phases:
+1. **Fill weak categories** — attention, card, pixel (13 new)
+2. **Strengthen existing** — text, hover, loading, background, entrance, button (31 new)
+3. **New categories** — exit, divider (9 new)

@@ -44,8 +44,10 @@ export const categories: { slug: Category; label: string; icon: string }[] = [
   { slug: "loading", label: "Loading", icon: "◌" },
   { slug: "background", label: "Background", icon: "▦" },
   { slug: "entrance", label: "Entrance", icon: "↓" },
+  { slug: "exit", label: "Exit", icon: "↑" },
   { slug: "button", label: "Button", icon: "☐" },
   { slug: "attention", label: "Attention", icon: "★" },
   { slug: "card", label: "Card", icon: "▢" },
+  { slug: "divider", label: "Divider", icon: "—" },
   { slug: "pixel", label: "Pixel", icon: "▪" },
 ];
