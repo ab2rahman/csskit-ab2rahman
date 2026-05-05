@@ -65,7 +65,7 @@ const floatingParticles: Animation = {
     { name: "--fp-color", label: "Color", type: "color", default: "#818cf8" },
     { name: "--fp-size", label: "Size", type: "range", default: 6, min: 3, max: 12, step: 1, unit: "px" },
   ],
-  preview: { width: 400, height: 200, darkBg: false },
+  preview: { width: 400, height: 200, darkBg: true },
 };
 
 export default floatingParticles;

@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { animations } from '../../animations/index';
-import { categories } from '../../data/animations';
-import { getAnimationBySlug, getAnimationsByCategory } from '../../animations/index';
-import AnimationPreview from '../../components/AnimationPreview';
+import { getAnimationsByCategory } from '../../animations/index';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -17,63 +15,129 @@ const { animation } = Astro.props;
 const related = getAnimationsByCategory(animation.category).filter(
   (a) => a.slug !== animation.slug
 ).slice(0, 3);
+
+const MAX_CODE_DISPLAY = 10000;
+const isLargeCSS = animation.css.length > MAX_CODE_DISPLAY;
+const displayCSS = isLargeCSS
+  ? animation.css.slice(0, MAX_CODE_DISPLAY) + '\n\n/* ... truncated. Use copy button for full code. */'
+  : animation.css;
+
+const escapeHtml = (s: string) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 ---
 
 <BaseLayout title={animation.name} description={animation.description}>
   {/* Back link */}
   <a
     href="/"
-    class="inline-flex items-center gap-2 text-sm text-text-muted hover:text-brand transition-colors mb-6"
+    class="inline-flex items-center gap-2 text-sm text-text-muted hover:text-tech-blue transition-colors mb-6 font-mono"
   >
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
     </svg>
-    Back to Library
+    back to library
   </a>
 
   {/* Header */}
   <div class="mb-8">
-    <div class="flex items-center gap-3 mb-2">
-      <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-brand/10 text-brand capitalize">
+    <div class="flex items-center gap-2 mb-3 flex-wrap">
+      <span class="px-2 py-0.5 text-[10px] rounded-full bg-tech-blue-dim text-tech-blue capitalize font-mono">
         {animation.category}
       </span>
-      {animation.tags.map((tag) => (
-        <span class="px-2 py-0.5 text-[10px] rounded-full bg-surface-lighter/50 text-text-muted">
+      {animation.tags.filter((t) => t !== animation.category).slice(0, 4).map((tag) => (
+        <span class="px-2 py-0.5 text-[10px] rounded-full bg-bg-surface-hover text-text-muted font-mono">
           {tag}
         </span>
       ))}
     </div>
-    <h1 class="text-2xl md:text-3xl font-bold text-text">{animation.name}</h1>
-    <p class="text-text-muted mt-2">{animation.description}</p>
+    <h1 class="text-2xl md:text-3xl font-bold text-text-primary font-heading">{animation.name}</h1>
+    <p class="text-text-muted mt-2 text-base">{animation.description}</p>
   </div>
 
-  {/* Interactive preview */}
-  <AnimationPreview
-    client:load
-    animation={animation}
-  />
+  {/* CSS injection */}
+  <style is:inline set:html={animation.css} />
+
+  {/* Live Preview */}
+  <div
+    class={`rounded-xl border border-border overflow-hidden flex items-center justify-center ${animation.preview.darkBg ? "bg-black" : "bg-bg-primary"}`}
+    style={`min-height: ${Math.max(animation.preview.height, 200)}px`}
+  >
+    <div class="w-full h-full flex items-center justify-center" set:html={animation.html} />
+  </div>
+
+  {/* Parameter Controls (only when params exist) */}
+  {animation.params.length > 0 && (
+    <div class="mt-6 space-y-4">
+      <h3 class="text-xs font-semibold text-text-muted uppercase tracking-widest font-mono">Parameters</h3>
+      <p class="text-xs text-text-muted">Interactive params available — coming soon for large animations.</p>
+    </div>
+  )}
+
+  {/* Code Block */}
+  <div class="mt-6">
+    <h3 class="text-xs font-semibold text-text-muted uppercase tracking-widest font-mono mb-3">Generated Code</h3>
+    <div class="rounded-xl border border-border overflow-hidden">
+      <div class="flex border-b border-border bg-bg-surface">
+        <button id="tab-css" class="px-4 py-2.5 text-xs font-semibold text-tech-blue border-b-2 border-tech-blue font-mono" onclick="
+          document.getElementById('tab-css').className='px-4 py-2.5 text-xs font-semibold text-tech-blue border-b-2 border-tech-blue font-mono';
+          document.getElementById('tab-html').className='px-4 py-2.5 text-xs font-semibold text-text-muted hover:text-text-primary font-mono';
+          document.getElementById('code-css').classList.remove('hidden');
+          document.getElementById('code-html').classList.add('hidden');
+        ">CSS</button>
+        <button id="tab-html" class="px-4 py-2.5 text-xs font-semibold text-text-muted hover:text-text-primary font-mono" onclick="
+          document.getElementById('tab-html').className='px-4 py-2.5 text-xs font-semibold text-tech-blue border-b-2 border-tech-blue font-mono';
+          document.getElementById('tab-css').className='px-4 py-2.5 text-xs font-semibold text-text-muted hover:text-text-primary font-mono';
+          document.getElementById('code-html').classList.remove('hidden');
+          document.getElementById('code-css').classList.add('hidden');
+        ">HTML</button>
+        <div class="flex-1"></div>
+        <button id="copy-btn" class="px-4 py-2.5 text-xs font-medium text-text-muted hover:text-tech-blue transition-colors font-mono" onclick="
+          const btn = document.getElementById('copy-btn');
+          const fullEl = document.getElementById('full-css');
+          const cssCode = fullEl ? fullEl.value : document.getElementById('code-css').textContent;
+          const htmlCode = document.getElementById('code-html').textContent;
+          const active = document.getElementById('code-css').classList.contains('hidden') ? htmlCode : cssCode;
+          navigator.clipboard.writeText(active).then(() => {
+            btn.textContent = 'copied!';
+            setTimeout(() => btn.textContent = 'copy', 2000);
+          });
+        ">copy</button>
+      </div>
+      {isLargeCSS && (
+        <div class="px-4 py-2 bg-tech-blue-dim/50 text-[10px] text-tech-blue font-mono border-b border-border">
+          Large CSS ({(animation.css.length / 1024).toFixed(0)} KB) — preview truncated, copy button copies full code
+        </div>
+      )}
+      <pre id="code-css" class="p-4 text-xs leading-relaxed overflow-x-auto bg-bg-primary text-text-muted max-h-80 font-mono" set:html={escapeHtml(displayCSS)} />
+      <pre id="code-html" class="hidden p-4 text-xs leading-relaxed overflow-x-auto bg-bg-primary text-text-muted max-h-80 font-mono" set:html={escapeHtml(animation.html)} />
+    </div>
+  </div>
+
+  {/* Hidden textarea for full CSS copy (large animations) */}
+  {isLargeCSS && (
+    <textarea id="full-css" class="hidden" set:html={escapeHtml(animation.css)} />
+  )}
 
   {/* Related animations */}
   {related.length > 0 && (
     <div class="mt-12">
-      <h2 class="text-lg font-semibold text-text mb-4">Related Animations</h2>
+      <h2 class="text-lg font-semibold text-text-primary font-heading mb-4">Related Animations</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {related.map((rel) => (
           <a
             href={`/animations/${rel.slug}`}
-            class="group block rounded-xl border border-border bg-surface-light hover:border-brand/50 transition-all duration-300 overflow-hidden"
+            class="group block rounded-xl border border-border bg-bg-surface hover:border-tech-blue/40 transition-all duration-300 overflow-hidden"
           >
             <div
               class:list={[
                 "relative flex items-center justify-center overflow-hidden h-32",
-                rel.preview.darkBg ? "bg-black" : "bg-surface"
+                rel.preview.darkBg ? "bg-black" : "bg-bg-primary"
               ]}
             >
               <style is:inline set:html={rel.css} />
-              <div class="scale-50 origin-center pointer-events-none" set:html={rel.html} />
+              <div class="pointer-events-none w-full h-full flex items-center justify-center" set:html={rel.html} />
             </div>
             <div class="p-3">
-              <h3 class="font-medium text-sm text-text group-hover:text-brand transition-colors">{rel.name}</h3>
+              <h3 class="font-medium text-sm text-text-primary group-hover:text-tech-blue transition-colors font-heading">{rel.name}</h3>
               <p class="text-xs text-text-muted mt-1 line-clamp-1">{rel.description}</p>
             </div>
           </a>

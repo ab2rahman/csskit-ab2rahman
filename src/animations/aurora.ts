@@ -72,7 +72,7 @@ const aurora: Animation = {
     { name: "--au-color-3", label: "Color 3", type: "color", default: "#0061ff" },
     { name: "--au-speed", label: "Speed", type: "duration", default: 6, min: 2, max: 15, step: 0.5, unit: "s" },
   ],
-  preview: { width: 400, height: 200, darkBg: false },
+  preview: { width: 400, height: 200, darkBg: true },
 };
 
 export default aurora;

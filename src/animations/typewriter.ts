@@ -6,7 +6,11 @@ const typewriter: Animation = {
   category: "text",
   description: "Character-by-character typing effect with blinking cursor. Customize text and speed.",
   tags: ["text", "typing", "cursor", "retro", "code"],
-  css: `.typewriter {
+  css: `.typewriter-wrapper {
+  display: inline-block;
+}
+
+.typewriter {
   --type-text: "Hello World!";
   --type-speed: 3s;
   --type-color: #00ff88;
@@ -31,7 +35,7 @@ const typewriter: Animation = {
 @keyframes blink {
   50% { border-color: transparent; }
 }`,
-  html: `<div class="typewriter">Hello World!</div>`,
+  html: `<div class="typewriter-wrapper"><div class="typewriter">Hello World!</div></div>`,
   params: [
     { name: "--type-color", label: "Color", type: "color", default: "#00ff88" },
     { name: "--type-speed", label: "Speed", type: "duration", default: 3, min: 1, max: 8, step: 0.5, unit: "s" },

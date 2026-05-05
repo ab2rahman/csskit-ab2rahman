@@ -7,7 +7,8 @@ export type Category =
   | "exit"
   | "attention"
   | "button"
-  | "card";
+  | "card"
+  | "pixel";
 
 export interface Param {
   name: string;
@@ -46,4 +47,5 @@ export const categories: { slug: Category; label: string; icon: string }[] = [
   { slug: "button", label: "Button", icon: "☐" },
   { slug: "attention", label: "Attention", icon: "★" },
   { slug: "card", label: "Card", icon: "▢" },
+  { slug: "pixel", label: "Pixel", icon: "▪" },
 ];

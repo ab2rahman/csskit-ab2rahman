@@ -29,6 +29,7 @@ import rippleClick from "./ripple-click";
 import bouncePress from "./bounce-press";
 import gradientBorder from "./gradient-border";
 import magneticHover from "./magnetic-hover";
+import pixelBat from "./pixel-bat";
 
 export const animations: Animation[] = [
   // Text
@@ -67,6 +68,8 @@ export const animations: Animation[] = [
   bouncePress,
   gradientBorder,
   magneticHover,
+  // Pixel
+  pixelBat,
 ];
 
 export function getAnimationBySlug(slug: string): Animation | undefined {

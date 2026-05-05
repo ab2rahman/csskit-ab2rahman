@@ -1,56 +1,68 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #818cf8;
-  --color-brand-light: #a5b4fc;
-  --color-surface: #0f172a;
-  --color-surface-light: #1e293b;
-  --color-surface-lighter: #334155;
-  --color-text: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --color-border: #1e293b;
-  --color-accent-green: #4ade80;
-  --color-accent-blue: #60a5fa;
-  --color-accent-purple: #a78bfa;
-  --color-accent-pink: #f472b6;
-  --color-accent-orange: #fb923c;
+  --color-bg-primary: #050B18;
+  --color-bg-surface: #0B0F14;
+  --color-bg-surface-hover: #111820;
+  --color-bg-glass: rgba(11, 15, 20, 0.7);
+  --color-tech-blue: #00AFFF;
+  --color-tech-blue-dim: rgba(0, 175, 255, 0.15);
+  --color-neon-green: #00E676;
+  --color-electric-cyan: #00D9FF;
+  --color-text-primary: #F5F7FA;
+  --color-text-muted: #9AA4B2;
+  --color-border: #1A2030;
+  --color-border-hover: #2A3548;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: var(--color-surface);
-  color: var(--color-text);
+  font-family: var(--font-body);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
   margin: 0;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-surface);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-surface-lighter);
-  border-radius: 3px;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
 }
 
-pre, code {
-  font-family: 'SF Mono', 'Fira Code', monospace;
+::selection {
+  background: var(--color-tech-blue);
+  color: white;
 }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--color-border-hover); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-tech-blue); }
+
+pre, code { font-family: var(--font-mono); }
 
 @keyframes page-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.page-enter {
-  animation: page-in 0.3s ease-out;
+.page-enter { animation: page-in 0.3s ease-out; }
+
+/* Cyber glow for accent elements */
+.glow-blue { text-shadow: 0 0 20px rgba(0, 175, 255, 0.3); }
+.glow-green { text-shadow: 0 0 20px rgba(0, 230, 118, 0.3); }
+
+/* Glassmorphism card */
+.glass-card {
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
 }

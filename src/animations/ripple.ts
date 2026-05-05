@@ -55,7 +55,7 @@ const ripple: Animation = {
     { name: "--rp-color", label: "Color", type: "color", default: "#22d3ee" },
     { name: "--rp-speed", label: "Speed", type: "duration", default: 2, min: 0.5, max: 5, step: 0.5, unit: "s" },
   ],
-  preview: { width: 400, height: 200, darkBg: false },
+  preview: { width: 400, height: 200, darkBg: true },
 };
 
 export default ripple;

@@ -2,27 +2,32 @@
 
 ---
 
-<header class="sticky top-0 z-20 bg-surface/80 backdrop-blur-lg border-b border-border">
-  <div class="flex items-center justify-between px-4 md:px-8 h-16">
+<header class="sticky top-0 z-20 bg-bg-primary/80 backdrop-blur-lg border-b border-border">
+  <div class="flex items-center justify-between px-4 md:px-8 h-14">
     <div class="flex items-center gap-3">
-      <!-- Mobile menu toggle -->
-      <button id="sidebar-toggle" class="lg:hidden p-2 rounded-lg hover:bg-surface-lighter/50 text-text-muted hover:text-text transition-colors">
+      <!-- Sidebar toggle (always visible) -->
+      <button id="sidebar-toggle" class="p-2 rounded-lg hover:bg-bg-surface-hover text-text-muted hover:text-text-primary transition-colors" title="Toggle sidebar">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
+      <!-- Mobile logo -->
       <a href="/" class="lg:hidden flex items-center gap-2">
-        <div class="w-7 h-7 rounded-md bg-brand flex items-center justify-center text-white font-bold text-sm">C</div>
-        <span class="font-bold text-text">CSSKit</span>
+        <div class="w-7 h-7 rounded-md bg-tech-blue/10 border border-tech-blue/30 flex items-center justify-center">
+          <svg class="w-4 h-4 text-tech-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="font-bold text-text-primary font-heading">CSSKit</span>
       </a>
     </div>
 
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-3">
       <a
         href="https://github.com/ab2rahman/csskit-ab2rahman"
         target="_blank"
         rel="noopener"
-        class="p-2 rounded-lg hover:bg-surface-lighter/50 text-text-muted hover:text-text transition-colors"
+        class="p-2 rounded-lg hover:bg-bg-surface-hover text-text-muted hover:text-text-primary transition-colors"
         aria-label="GitHub"
       >
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
