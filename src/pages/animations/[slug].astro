@@ -65,10 +65,10 @@ const escapeHtml = (s: string) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').r
 
       {/* Static Live Preview */}
       <div
-        class={`rounded-xl border border-border overflow-hidden flex items-center justify-center ${animation.preview.darkBg ? "bg-black" : "bg-bg-primary"}`}
-        style={`min-height: ${Math.max(animation.preview.height, 160)}px`}
+        class={`rounded-xl border border-border flex items-center justify-center ${animation.preview.darkBg ? "bg-black" : "bg-bg-primary"}`}
+        style={{ minHeight: `${Math.max(animation.preview.height, 160)}px` }}
       >
-        <div class="w-full h-full flex items-center justify-center overflow-hidden p-4" set:html={animation.html} />
+        <div class="w-full flex items-center justify-center p-4" style={`min-height: ${Math.max(animation.preview.height, 160)}px`} set:html={animation.html} />
       </div>
 
       {/* Code Block */}

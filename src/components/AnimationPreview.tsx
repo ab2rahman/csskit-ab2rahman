@@ -25,7 +25,7 @@ export default function AnimationPreview({ animation }: Props) {
     let css = baseCSS;
     animation.params.forEach((p) => {
       const val = paramValues[p.name];
-      const unit = p.type === "duration" ? (p.unit || "s") : (p.type === "range" ? (p.unit || "") : "");
+      const unit = p.type === "duration" ? (p.unit || "s") : "";
       const regex = new RegExp(`(${p.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*:\\s*)([^;]+)(;)`, "g");
       css = css.replace(regex, `$1${val}${unit}$3`);
     });
@@ -55,13 +55,13 @@ export default function AnimationPreview({ animation }: Props) {
     <div>
       {/* Live Preview */}
       <div
-        className={`rounded-xl border border-border overflow-hidden flex items-center justify-center ${
+        className={`rounded-xl border border-border flex items-center justify-center ${
           animation.preview.darkBg ? "bg-black" : "bg-bg-primary"
         }`}
         style={{ minHeight: `${Math.max(animation.preview.height, 160)}px` }}
       >
         <style dangerouslySetInnerHTML={{ __html: css }} />
-        <div className="w-full h-full flex items-center justify-center overflow-hidden p-4" dangerouslySetInnerHTML={{ __html: html }} />
+        <div className="w-full h-full flex items-center justify-center p-4" style={{ minHeight: 'inherit' }} dangerouslySetInnerHTML={{ __html: html }} />
       </div>
 
       {/* Parameter Controls */}
