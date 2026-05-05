@@ -58,9 +58,10 @@ export default function AnimationPreview({ animation }: Props) {
         className={`rounded-xl border border-border overflow-hidden flex items-center justify-center ${
           animation.preview.darkBg ? "bg-black" : "bg-bg-primary"
         }`}
-        style={{ minHeight: `${Math.max(animation.preview.height, 200)}px` }}
+        style={{ minHeight: `${Math.max(animation.preview.height, 160)}px` }}
       >
-        <div className="w-full h-full flex items-center justify-center" dangerouslySetInnerHTML={{ __html: html }} />
+        <style dangerouslySetInnerHTML={{ __html: css }} />
+        <div className="w-full h-full flex items-center justify-center overflow-hidden p-4" dangerouslySetInnerHTML={{ __html: html }} />
       </div>
 
       {/* Parameter Controls */}
