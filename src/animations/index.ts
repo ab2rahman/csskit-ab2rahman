@@ -46,6 +46,46 @@ import cardSpotlight from "./card-spotlight";
 import cardShuffle from "./card-shuffle";
 import cardBorderGlow from "./card-border-glow";
 import cardTilt from "./card-tilt";
+import textRetro from "./text-retro";
+import textScramble from "./text-scramble";
+import textSplit from "./text-split";
+import textStroke from "./text-stroke";
+import hoverCurl from "./hover-curl";
+import hoverGlitch from "./hover-glitch";
+import hoverPulse from "./hover-pulse";
+import hoverSlideBg from "./hover-slide-bg";
+import hoverSwap from "./hover-swap";
+import hoverZoom from "./hover-zoom";
+import loadingBars from "./loading-bars";
+import loadingCircle from "./loading-circle";
+import loadingDotsBounce from "./loading-dots-bounce";
+import loadingOrbit from "./loading-orbit";
+import loadingSquare from "./loading-square";
+import loadingWave from "./loading-wave";
+import bgBubbles from "./bg-bubbles";
+import bgConfetti from "./bg-confetti";
+import bgGridPulse from "./bg-grid-pulse";
+import bgMeshGradient from "./bg-mesh-gradient";
+import bgRain from "./bg-rain";
+import bgStars from "./bg-stars";
+import entranceClip from "./entrance-clip";
+import entranceFlip from "./entrance-flip";
+import entranceSlide from "./entrance-slide";
+import entranceSwing from "./entrance-swing";
+import entranceZoom from "./entrance-zoom";
+import btnFillSlide from "./btn-fill-slide";
+import btnGlow from "./btn-glow";
+import btnShine from "./btn-shine";
+import btnSwap from "./btn-swap";
+import exitFadeDown from "./exit-fade-down";
+import exitFlipOut from "./exit-flip-out";
+import exitScaleDown from "./exit-scale-down";
+import exitSlideOut from "./exit-slide-out";
+import exitZoomOut from "./exit-zoom-out";
+import dividerDraw from "./divider-draw";
+import dividerFade from "./divider-fade";
+import dividerGlow from "./divider-glow";
+import dividerWave from "./divider-wave";
 
 export const animations: Animation[] = [
   // Text
@@ -55,6 +95,10 @@ export const animations: Animation[] = [
   waveText,
   blurReveal,
   neonGlow,
+  textRetro,
+  textScramble,
+  textSplit,
+  textStroke,
   // Hover
   fillUp,
   underlineSlide,
@@ -62,28 +106,61 @@ export const animations: Animation[] = [
   borderDraw,
   shineSweep,
   flipCard,
+  hoverCurl,
+  hoverGlitch,
+  hoverPulse,
+  hoverSlideBg,
+  hoverSwap,
+  hoverZoom,
   // Loading
   pulseDots,
   spinningRing,
   morphingShape,
   progressBar,
   skeletonLoader,
+  loadingBars,
+  loadingCircle,
+  loadingDotsBounce,
+  loadingOrbit,
+  loadingSquare,
+  loadingWave,
   // Background
   gradientShift,
   floatingParticles,
   aurora,
   ripple,
+  bgBubbles,
+  bgConfetti,
+  bgGridPulse,
+  bgMeshGradient,
+  bgRain,
+  bgStars,
   // Entrance
   fadeSlideUp,
   bounceIn,
   blurIn,
   rotateIn,
   staggerChildren,
+  entranceClip,
+  entranceFlip,
+  entranceSlide,
+  entranceSwing,
+  entranceZoom,
+  // Exit
+  exitFadeDown,
+  exitFlipOut,
+  exitScaleDown,
+  exitSlideOut,
+  exitZoomOut,
   // Button
   rippleClick,
   bouncePress,
   gradientBorder,
   magneticHover,
+  btnFillSlide,
+  btnGlow,
+  btnShine,
+  btnSwap,
   // Attention
   attentionShake,
   attentionPulseGlow,
@@ -102,6 +179,11 @@ export const animations: Animation[] = [
   cardShuffle,
   cardBorderGlow,
   cardTilt,
+  // Divider
+  dividerDraw,
+  dividerFade,
+  dividerGlow,
+  dividerWave,
   // Pixel
   pixelBat,
 ];
