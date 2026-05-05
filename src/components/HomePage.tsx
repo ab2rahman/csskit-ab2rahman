@@ -25,7 +25,7 @@ function LazyCard({ anim }: { anim: Animation }) {
     <a
       ref={cardRef}
       href={`/animations/${anim.slug}`}
-      className="group block rounded-xl border border-border bg-bg-surface hover:border-tech-blue/40 hover:bg-bg-surface-hover transition-all duration-300 overflow-hidden"
+      className="group block rounded-xl border border-border bg-bg-surface hover:border-tech-blue/40 hover:bg-bg-surface-hover transition-all duration-300 overflow-hidden w-full"
     >
       <div className="relative flex items-center justify-center overflow-hidden h-32 sm:h-40">
         {isVisible && (
@@ -140,7 +140,7 @@ export default function HomePage({ initialCategory }: Props) {
   }, []);
 
   return (
-    <div>
+    <div className="w-full overflow-hidden">
       {/* Search */}
       <div className="max-w-xl mb-8">
         <div className="relative">
@@ -205,7 +205,7 @@ export default function HomePage({ initialCategory }: Props) {
           <div className="text-xs text-text-muted mb-4 font-mono">
             Showing {visible.length} of {displayed.length} animations
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
             {visible.map((anim: Animation) => (
               <LazyCard key={anim.slug} anim={anim} />
             ))}
