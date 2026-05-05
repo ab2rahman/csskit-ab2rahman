@@ -4,7 +4,7 @@ import { categories } from '../data/animations';
 const currentPath = Astro.url.pathname;
 ---
 
-<aside class="fixed left-0 top-0 h-full w-64 bg-bg-surface border-r border-border z-40 transition-transform duration-300 flex flex-col" id="sidebar">
+<aside class="fixed left-0 top-0 h-full w-72 md:w-64 bg-bg-surface border-r border-border z-40 transition-transform duration-300 flex flex-col -translate-x-full lg:translate-x-0" id="sidebar">
   <div class="flex-1 overflow-y-auto p-5">
     <!-- Logo -->
     <a href="/" class="flex items-center gap-3 mb-6 group">
@@ -66,7 +66,7 @@ const currentPath = Astro.url.pathname;
 </aside>
 
 <!-- Overlay for mobile / collapsed -->
-<div class="fixed inset-0 bg-black/50 z-30 hidden" id="sidebar-overlay"></div>
+<div class="fixed inset-0 bg-black/50 z-30 hidden transition-opacity" id="sidebar-overlay"></div>
 
 <script>
   function initSidebar() {
@@ -74,25 +74,26 @@ const currentPath = Astro.url.pathname;
     const overlay = document.getElementById('sidebar-overlay');
     const mainContent = document.getElementById('main-content');
     const toggleBtn = document.getElementById('sidebar-toggle');
-    let isSidebarOpen = window.innerWidth >= 1024;
+    const isDesktop = () => window.innerWidth >= 1024;
+    let isSidebarOpen = isDesktop();
 
     function updateLayout() {
       if (!sidebar || !mainContent) return;
       if (isSidebarOpen) {
         sidebar.classList.remove('-translate-x-full');
-        mainContent.classList.add('lg:ml-64');
-        mainContent.classList.remove('ml-0');
-        overlay?.classList.add('hidden');
+        overlay?.classList.toggle('hidden', isDesktop());
+        if (isDesktop()) {
+          mainContent.classList.add('lg:ml-64');
+        } else {
+          mainContent.classList.remove('lg:ml-64');
+        }
       } else {
         sidebar.classList.add('-translate-x-full');
+        overlay?.classList.add('hidden');
         mainContent.classList.remove('lg:ml-64');
-        mainContent.classList.add('ml-0');
       }
     }
 
-    if (window.innerWidth < 1024) {
-      isSidebarOpen = false;
-    }
     updateLayout();
 
     toggleBtn?.addEventListener('click', () => {
@@ -103,6 +104,15 @@ const currentPath = Astro.url.pathname;
     overlay?.addEventListener('click', () => {
       isSidebarOpen = false;
       updateLayout();
+    });
+
+    // Handle resize — auto open/close based on breakpoint
+    window.addEventListener('resize', () => {
+      const wasDesktop = isSidebarOpen === isDesktop();
+      if (isDesktop() && !isSidebarOpen) {
+        isSidebarOpen = true;
+        updateLayout();
+      }
     });
 
     // Sidebar category links — dispatch event for React to pick up
@@ -120,13 +130,11 @@ const currentPath = Astro.url.pathname;
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const cat = (link as HTMLElement).dataset.category || 'all';
-        // Update URL hash
         history.pushState(null, '', `#${cat}`);
-        // Dispatch custom event for React
         window.dispatchEvent(new CustomEvent('csskit:category', { detail: cat }));
         setActive(link);
         // Close sidebar on mobile
-        if (window.innerWidth < 1024) {
+        if (!isDesktop()) {
           isSidebarOpen = false;
           updateLayout();
         }

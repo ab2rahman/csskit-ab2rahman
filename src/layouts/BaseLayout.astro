@@ -25,9 +25,9 @@ const { title, description = 'Free CSS animation library. Browse, customize, and
   </head>
   <body class="flex min-h-screen">
     <Sidebar />
-    <div class="flex-1 flex flex-col min-h-screen ml-0 transition-all duration-300" id="main-content">
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300" id="main-content">
       <Header />
-      <main class="flex-1 p-4 md:p-8 page-enter max-w-6xl w-full mx-auto">
+      <main class="flex-1 p-4 md:p-8 page-enter w-full max-w-6xl mx-auto">
         <slot />
       </main>
     </div>

@@ -27,7 +27,7 @@ function LazyCard({ anim }: { anim: Animation }) {
       href={`/animations/${anim.slug}`}
       className="group block rounded-xl border border-border bg-bg-surface hover:border-tech-blue/40 hover:bg-bg-surface-hover transition-all duration-300 overflow-hidden"
     >
-      <div className="relative flex items-center justify-center overflow-hidden h-40">
+      <div className="relative flex items-center justify-center overflow-hidden h-32 sm:h-40">
         {isVisible && (
           <>
             <style dangerouslySetInnerHTML={{ __html: anim.css }} />
@@ -158,11 +158,11 @@ export default function HomePage({ initialCategory }: Props) {
         </div>
       </div>
 
-      {/* Category tabs */}
-      <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+      {/* Category tabs — horizontal scroll on mobile */}
+      <div className="flex gap-2 mb-8 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-none">
         <button
           onClick={() => setActiveCategory("all")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
+          className={`px-3 md:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex-shrink-0 ${
             activeCategory === "all"
               ? "bg-tech-blue text-white"
               : "bg-bg-surface text-text-muted hover:text-text-primary hover:bg-bg-surface-hover border border-border"
@@ -177,14 +177,16 @@ export default function HomePage({ initialCategory }: Props) {
             <button
               key={cat.slug}
               onClick={() => setActiveCategory(cat.slug)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              className={`px-3 md:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center gap-1.5 flex-shrink-0 ${
                 activeCategory === cat.slug
                   ? "bg-tech-blue text-white"
                   : "bg-bg-surface text-text-muted hover:text-text-primary hover:bg-bg-surface-hover border border-border"
               }`}
             >
               <span className="text-base">{cat.icon}</span>
-              {cat.label} ({count})
+              <span className="hidden sm:inline">{cat.label}</span>
+              <span className="sm:hidden">{cat.label.slice(0, 3)}</span>
+              <span className="text-xs opacity-70">({count})</span>
             </button>
           );
         })}
