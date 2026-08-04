@@ -4,51 +4,45 @@ const btnShine: Animation = {
   slug: "btn-shine",
   name: "Button Shine",
   category: "button",
-  description:
-    "Light streak sweeps across the button on hover. Premium gloss effect that adds a polished feel to CTAs.",
+  description: "Button percaya diri dengan kilau yang lewat terus, persis seperti demo Codingan CSS Bapak.",
   tags: ["button", "shine", "sweep", "light", "gloss", "premium"],
   css: `.btn-shine {
-  --bsh-color: #3b82f6;
-  --bsh-shine: rgba(255,255,255,0.3);
-  --bsh-speed: 0.6s;
+  --bsh-color: #c7ff87;
+  --bsh-speed: 2.4s;
   position: relative;
   display: inline-block;
-  padding: 12px 28px;
-  border-radius: 8px;
-  background: var(--bsh-color);
-  color: #fff;
-  font-weight: 600;
-  font-size: 14px;
-  font-family: system-ui, sans-serif;
-  cursor: pointer;
-  border: none;
   overflow: hidden;
+  padding: 1.15rem 1.55rem;
+  border: 1px solid rgba(255,255,255,.53);
+  border-radius: .7rem;
+  color: #07101e;
+  background: var(--bsh-color);
+  font: 700 .9rem/1 Inter, system-ui, sans-serif;
+  letter-spacing: .03em;
 }
 
 .btn-shine::after {
-  content: '';
+  content: "";
   position: absolute;
-  top: -50%;
-  left: -75%;
-  width: 50%;
-  height: 200%;
-  background: linear-gradient(90deg, transparent, var(--bsh-shine), transparent);
-  transform: skewX(-20deg);
-  transition: none;
+  inset: -50% auto -50% -70%;
+  width: 28%;
+  background: rgba(255,255,255,.6);
+  transform: skewX(-22deg);
+  animation: bsh-shine var(--bsh-speed) linear infinite;
 }
 
-.btn-shine:hover::after {
-  animation: bsh-sweep var(--bsh-speed) ease;
+@keyframes bsh-shine {
+  from { transform: translateX(-310%) skewX(-22deg); }
+  to { transform: translateX(680%) skewX(-22deg); }
 }
 
-@keyframes bsh-sweep {
-  0% { left: -75%; }
-  100% { left: 125%; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-shine::after { animation: none; }
 }`,
-  html: '<div class="btn-shine">Shine</div>',
+  html: '<div class="btn-shine">LANJUT, PAK →</div>',
   params: [
-    { name: "--bsh-color", label: "Color", type: "color", default: "#3b82f6" },
-    { name: "--bsh-speed", label: "Speed", type: "duration", default: 0.6, min: 0.2, max: 1.5, step: 0.1, unit: "s" },
+    { name: "--bsh-color", label: "Button Color", type: "color", default: "#c7ff87" },
+    { name: "--bsh-speed", label: "Shine Cycle", type: "duration", default: 2.4, min: 0.8, max: 5, step: 0.1, unit: "s" },
   ],
   preview: { width: 250, height: 120, darkBg: true },
 };

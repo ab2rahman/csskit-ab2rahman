@@ -154,7 +154,17 @@ import pixelAlien from "./pixel-alien";
 import textGlitchRgb from "./text-glitch-rgb";
 import textWave3d from "./text-wave-3d";
 import textPop from "./text-pop";
+import textKineticCaption from "./text-kinetic-caption";
+import textMarkerReveal from "./text-marker-reveal";
+import textImpactOutline from "./text-impact-outline";
+import textStickerCta from "./text-sticker-cta";
+import textTickerLoop from "./text-ticker-loop";
 import textRainDrop from "./text-rain-drop";
+import creatorKaraokeCaption from "./creator-karaoke-caption";
+import creatorCommentStack from "./creator-comment-stack";
+import creatorReactionFrame from "./creator-reaction-frame";
+import creatorCutoutSticker from "./creator-cutout-sticker";
+import creatorBeforeAfter from "./creator-before-after";
 import hoverShineLine from "./hover-shine-line";
 import hoverExpandBorder from "./hover-expand-border";
 import hoverBackdrop from "./hover-backdrop";
@@ -331,7 +341,18 @@ export const animations: Animation[] = [
   textGlitchRgb,
   textWave3d,
   textPop,
+  textKineticCaption,
+  textMarkerReveal,
+  textImpactOutline,
+  textStickerCta,
+  textTickerLoop,
   textRainDrop,
+  // Creator overlays
+  creatorKaraokeCaption,
+  creatorCommentStack,
+  creatorReactionFrame,
+  creatorCutoutSticker,
+  creatorBeforeAfter,
   // Hover
   fillUp,
   underlineSlide,

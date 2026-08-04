@@ -8,6 +8,7 @@ interface Props {
 export default function AnimationPreview({ animation }: Props) {
 
   const [baseCSS] = useState(() => animation.css);
+  const [previewKey, setPreviewKey] = useState(0);
 
   const [paramValues, setParamValues] = useState<Record<string, string | number>>(() => {
     const vals: Record<string, string | number> = {};
@@ -50,11 +51,25 @@ export default function AnimationPreview({ animation }: Props) {
 
   const css = generateCSS();
   const html = generateHTML();
+  const replayPreview = () => setPreviewKey((key) => key + 1);
 
   return (
     <div>
       {/* Live Preview */}
+      <div className="flex justify-end mb-3">
+        <button
+          type="button"
+          onClick={replayPreview}
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-bg-surface text-xs font-medium text-text-muted hover:text-tech-blue hover:border-tech-blue/50 transition-colors font-mono"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.58m15.11 2A8 8 0 004.58 9M20 20v-5h-.58m-15.11-2A8 8 0 0019.42 15" />
+          </svg>
+          replay animation
+        </button>
+      </div>
       <div
+        key={previewKey}
         className={`rounded-xl border border-border flex items-center justify-center ${
           animation.preview.darkBg ? "bg-black" : "bg-bg-primary"
         }`}

@@ -60,16 +60,33 @@ const escapeHtml = (s: string) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').r
     <AnimationPreview client:only="react" animation={animation} />
   ) : (
     <div>
-      {/* CSS injection */}
-      <style is:inline set:html={animation.css} />
+      <div class="flex justify-end mb-3">
+        <button id="replay-animation" type="button" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-bg-surface text-xs font-medium text-text-muted hover:text-tech-blue hover:border-tech-blue/50 transition-colors font-mono">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.58m15.11 2A8 8 0 004.58 9M20 20v-5h-.58m-15.11-2A8 8 0 0019.42 15" />
+          </svg>
+          replay animation
+        </button>
+      </div>
 
       {/* Static Live Preview */}
       <div
+        id="animation-preview"
         class={`rounded-xl border border-border flex items-center justify-center ${animation.preview.darkBg ? "bg-black" : "bg-bg-primary"}`}
         style={{ minHeight: `${Math.max(animation.preview.height, 160)}px` }}
       >
+        {/* CSS injection */}
+        <style is:inline set:html={animation.css} />
         <div class="w-full flex items-center justify-center p-4" style={`min-height: ${Math.max(animation.preview.height, 160)}px`} set:html={animation.html} />
       </div>
+
+      <script is:inline>
+        document.getElementById('replay-animation')?.addEventListener('click', () => {
+          const preview = document.getElementById('animation-preview');
+          if (!preview) return;
+          preview.replaceWith(preview.cloneNode(true));
+        });
+      </script>
 
       {/* Code Block */}
       <div class="mt-6">

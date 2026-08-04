@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+.vercel
+
+# Local creator presentation assets — deployed manually, never committed
+src/pages/presentasi.astro
+src/pages/instagram-karaoke-caption.astro
+public/codinganbapak-avatar.png

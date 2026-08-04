@@ -4,69 +4,64 @@ const textGlitchRgb: Animation = {
   slug: "text-glitch-rgb",
   name: "RGB Glitch",
   category: "text",
-  description:
-    "Red and blue channel split glitch effect. Cyberpunk-style text with RGB color separation and jitter.",
+  description: "Tiga baris judul glitch RGB bertingkat untuk efek digital yang lebih dramatis.",
   tags: ["text", "glitch", "rgb", "split", "cyberpunk", "channel"],
   css: `.text-glitch-rgb {
-  --tgr-color: #ffffff;
-  --tgr-speed: 2s;
+  --tgr-accent: #ff9b8e;
+  --tgr-speed: .95s;
+  display: grid;
+  gap: .08em;
+  color: #fff;
+  font: 700 clamp(1.55rem, 6vw, 2.4rem)/.88 Inter, system-ui, sans-serif;
+  letter-spacing: -.07em;
+}
+
+.text-glitch-rgb__line {
   position: relative;
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--tgr-color);
-  animation: tgr-skew var(--tgr-speed) infinite;
+  display: block;
+  width: max-content;
+  text-shadow: 3px 0 #ff728b, -3px 0 var(--tgr-accent);
+  animation: tgr-jitter var(--tgr-speed) steps(2) infinite;
 }
 
-.text-glitch-rgb::before,
-.text-glitch-rgb::after {
-  content: 'GLITCH';
+.text-glitch-rgb__line:nth-child(2) { margin-left: .55em; animation-delay: -.16s; }
+.text-glitch-rgb__line:nth-child(3) { margin-left: 1.1em; animation-delay: -.32s; }
+
+.text-glitch-rgb__line::before,
+.text-glitch-rgb__line::after {
+  content: attr(data-text);
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  color: #fff;
+  opacity: .6;
 }
 
-.text-glitch-rgb::before {
-  color: #ff0000;
-  animation: tgr-red var(--tgr-speed) infinite;
-  clip-path: inset(0 0 0 0);
+.text-glitch-rgb__line::before {
+  transform: translate(-3px,-2px);
+  clip-path: inset(0 0 55% 0);
 }
 
-.text-glitch-rgb::after {
-  color: #0000ff;
-  animation: tgr-blue var(--tgr-speed) infinite;
-  clip-path: inset(0 0 0 0);
+.text-glitch-rgb__line::after {
+  transform: translate(3px,2px);
+  clip-path: inset(55% 0 0 0);
 }
 
-@keyframes tgr-skew {
-  0%, 100% { transform: skew(0deg); }
-  20% { transform: skew(-2deg); }
-  40% { transform: skew(0deg); }
-  60% { transform: skew(1deg); }
-  80% { transform: skew(-1deg); }
+@keyframes tgr-jitter {
+  20% { transform: translate(2px,-1px); }
+  40% { transform: translate(-3px,2px); }
+  60% { transform: translate(3px,1px); }
+  80% { transform: translate(-1px,-2px); }
 }
 
-@keyframes tgr-red {
-  0%, 100% { transform: translate(0); }
-  20% { transform: translate(-3px, 2px); }
-  40% { transform: translate(2px, -1px); }
-  60% { transform: translate(-1px, 1px); }
-  80% { transform: translate(3px, -2px); }
-}
-
-@keyframes tgr-blue {
-  0%, 100% { transform: translate(0); }
-  20% { transform: translate(3px, -2px); }
-  40% { transform: translate(-2px, 1px); }
-  60% { transform: translate(1px, -1px); }
-  80% { transform: translate(-3px, 2px); }
+@media (prefers-reduced-motion: reduce) {
+  .text-glitch-rgb__line { animation: none; }
 }`,
-  html: '<div class="text-glitch-rgb">GLITCH</div>',
+  html: '<div class="text-glitch-rgb"><span class="text-glitch-rgb__line" data-text="BUG ATAU STYLE?">BUG ATAU STYLE?</span><span class="text-glitch-rgb__line" data-text="BUG ATAU STYLE?">BUG ATAU STYLE?</span><span class="text-glitch-rgb__line" data-text="BUG ATAU STYLE?">BUG ATAU STYLE?</span></div>',
   params: [
-    { name: "--tgr-speed", label: "Speed", type: "duration", default: 2, min: 0.5, max: 5, step: 0.5, unit: "s" },
+    { name: "--tgr-accent", label: "Accent", type: "color", default: "#ff9b8e" },
+    { name: "--tgr-speed", label: "Glitch Speed", type: "duration", default: 0.95, min: 0.3, max: 3, step: 0.05, unit: "s" },
   ],
-  preview: { width: 300, height: 120, darkBg: true },
+  preview: { width: 300, height: 160, darkBg: true },
 };
 
 export default textGlitchRgb;
